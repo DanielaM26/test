@@ -20,13 +20,13 @@ class LicenseAuthority:
 
     def list_suspended_licenses(self, data):
         # Method to list suspended licenses
-        sus_licenses = [lic for lic in data if license["suspended"]]
+        sus_licenses = [lic for lic in data if lic["suspendat"]]
         return sus_licenses
 
     def extract_valid_licenses(self, data):
         # Method to extract valid licenses issued until today's date
         today = datetime.today().strftime("%Y-%m-%d")
-        val_licenses = [lic for lic in data if lic["data_de_expirare"] >= today]
+        val_licenses = [lic for lic in data if lic["dataDeExpirare"] >= today]
         return val_licenses
 
     def find_license_count_by_category(self, data):
@@ -45,7 +45,9 @@ class LicenseAuthority:
         workbook = openpyxl.Workbook()
         sheet = workbook.active
 
-        # Write data to Excel sheet (Create a enumeration to use row)
+        # Write data to Excel sheet (Create a nenumeration to use row)
+        headers = list(data[0].keys())
+        sheet.append(headers)  # Write the headers to the first row
         for row, lic in enumerate(data, start=1):
             sheet.append(list(lic.values()))
 
